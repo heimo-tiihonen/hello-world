@@ -27,8 +27,8 @@ class UI():
     
 class CUI(UI):
                
-    def init(self):
-        super().__init__()
+    def __init__(self, presenter):
+        super().__init__(presenter)
     
     
     def main(self):
@@ -85,8 +85,9 @@ class CUI(UI):
 
 class GUI(UI, QWidget):
     
-    def __init__(self):
-        super().__init__()
+    def __init__(self, presenter):
+        UI.__init__(self, presenter)
+        QWidget.__init__(self)
         self._initUI()
         
         
