@@ -43,12 +43,12 @@ class CUI(UI):
             print(menu)
             action = input('Valintasi -> ')
             if action in main_menu_actions:
-                self.presenter.main(action)
+                self.presenter.process_action(action)
             else:
                 self.showmessage('Väärä valinta!')
             
  
-    def contactmenu(self, contact):
+    def contact_menu(self, contact):
         contact_menu = '''
         1) Muokkaa yhteystietoa
         2) Poista yhteystieto
@@ -61,7 +61,7 @@ class CUI(UI):
             print(contact_menu)
             action = input('Valintasi -> ')
             if action in contact_menu_actions:
-                self.presenter.contactmenu(action, contact)
+                self.presenter.process_contact_action(action, contact)
             elif action == '3':
                 break
             else:

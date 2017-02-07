@@ -59,13 +59,13 @@ class Presenter:
             self.ui.showmessage('Ei muutoksia!')
             
             
-    def main(self, action):
+    def process_action(self, action):
         #Process input
         if action == UI.CONST_ACTION_FIND:
             searchstring = self.ui.searchcontact()
             contact = self._searchcontact(searchstring)
             if contact:
-                self.ui.contactmenu(contact)
+                self.ui.contact_menu(contact)
             else:
                 self.ui.showmessage('Ei löytynyt yhteystietoja nimellä: ' + searchstring)
         elif action == UI.CONST_ACTION_ADD:
@@ -79,7 +79,7 @@ class Presenter:
             sys.exit()
         
         
-    def contactmenu(self, action, contact):
+    def process_contact_action(self, action, contact):
         if action == UI.CONST_ACTION_MODIFY:
             self._modifycontact(contact)
         elif action == UI.CONST_ACTION_REMOVE:
