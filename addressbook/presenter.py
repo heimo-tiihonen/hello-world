@@ -65,8 +65,7 @@ class Presenter:
             searchstring = self.ui.searchcontact()
             contact = self._searchcontact(searchstring)
             if contact:
-                self.ui.showcontact(contact)
-                self._contactmenu(contact)
+                self.ui.contactmenu(contact)
             else:
                 self.ui.showmessage('Ei löytynyt yhteystietoja nimellä: ' + searchstring)
         elif action == UI.CONST_ACTION_ADD:
@@ -80,18 +79,10 @@ class Presenter:
             sys.exit()
         
         
-    def _contactmenu(self, contact):
-        while True:
-            action = self.ui.contactmenu()
-            if action == UI.CONST_ACTION_MODIFY:
-                self._modifycontact(contact)
-                break
-            elif action == UI.CONST_ACTION_REMOVE:
-                self.ui.showmessage('Poistettu yhteystieto!')
-                self.addressbook.remove_contact(contact)
-                break
-            elif action == UI.CONST_ACTION_RETURN:
-                break
-        else:
-            self.ui.showmessage('Väärä valinta!')
+    def contactmenu(self, action, contact):
+        if action == UI.CONST_ACTION_MODIFY:
+            self._modifycontact(contact)
+        elif action == UI.CONST_ACTION_REMOVE:
+            self.ui.showmessage('Poistettu yhteystieto!')
+            self.addressbook.remove_contact(contact)            
     

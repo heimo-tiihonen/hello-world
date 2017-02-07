@@ -19,7 +19,6 @@ class UI():
     #Contact-menu actions
     CONST_ACTION_MODIFY = '1'
     CONST_ACTION_REMOVE = '2'
-    CONST_ACTION_RETURN = '3'
 
     def __init__(self, presenter):
         self.presenter = presenter
@@ -33,10 +32,10 @@ class CUI(UI):
     
     def main(self):
         menu = '''Valitse toiminto:
-        {}) Etsi yhteystietoa nimellä
-        {}) Lisää yhteystieto
-        {}) Lista kaikista yhteystiedoista
-        {}) Poistu ohjelmasta'''.format(UI.CONST_ACTION_FIND, UI.CONST_ACTION_ADD, UI.CONST_ACTION_LIST, UI.CONST_ACTION_EXIT )
+        1) Etsi yhteystietoa nimellä
+        2) Lisää yhteystieto
+        3) Lista kaikista yhteystiedoista
+        4) Poistu ohjelmasta'''
 
         main_menu_actions = (UI.CONST_ACTION_FIND, UI.CONST_ACTION_ADD, UI.CONST_ACTION_LIST, UI.CONST_ACTION_EXIT)
         
@@ -49,15 +48,25 @@ class CUI(UI):
                 self.showmessage('Väärä valinta!')
             
  
-    def contactmenu(self):
+    def contactmenu(self, contact):
         contact_menu = '''
-        {}) Muokkaa yhteystietoa
-        {}) Poista yhteystieto
-        {}) Palaa takaisin'''.format(UI.CONST_ACTION_MODIFY, UI.CONST_ACTION_REMOVE, UI.CONST_ACTION_RETURN)
+        1) Muokkaa yhteystietoa
+        2) Poista yhteystieto
+        3) Palaa takaisin'''
         
-        print(contact_menu)
-        return input('Valintasi -> ')
-             
+        contact_menu_actions = (UI.CONST_ACTION_MODIFY, UI.CONST_ACTION_REMOVE)
+        self.showcontact(contact)
+
+        while True:
+            print(contact_menu)
+            action = input('Valintasi -> ')
+            if action in contact_menu_actions:
+                self.presenter.contactmenu(action, contact)
+            elif action == '3':
+                break
+            else:
+                self.showmessage('Väärä valinta!')
+
     
     def modifycontact(self, contact):
         new_name = input('Nimi: ({}) -> '.format(contact.name))
