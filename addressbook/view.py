@@ -10,15 +10,13 @@ from PyQt5.QtWidgets import (QWidget, QPushButton,
 
 
 class UI():  
-    #Main menu actions
-    CONST_ACTION_FIND = '1'
-    CONST_ACTION_ADD = '2'
-    CONST_ACTION_LIST = '3'
-    CONST_ACTION_EXIT = '4'
-    
-    #Contact-menu actions
-    CONST_ACTION_MODIFY = '1'
-    CONST_ACTION_REMOVE = '2'
+    #actions
+    CONST_ACTION_FIND = 1
+    CONST_ACTION_ADD = 2
+    CONST_ACTION_LIST = 3
+    CONST_ACTION_EXIT = 4
+    CONST_ACTION_MODIFY = 5
+    CONST_ACTION_REMOVE = 6
 
     def __init__(self, presenter):
         self.presenter = presenter
@@ -36,14 +34,13 @@ class CUI(UI):
         2) Lisää yhteystieto
         3) Lista kaikista yhteystiedoista
         4) Poistu ohjelmasta'''
-
-        main_menu_actions = (UI.CONST_ACTION_FIND, UI.CONST_ACTION_ADD, UI.CONST_ACTION_LIST, UI.CONST_ACTION_EXIT)
         
+        main_actions = (UI.CONST_ACTION_FIND, UI.CONST_ACTION_ADD, UI.CONST_ACTION_LIST, UI.CONST_ACTION_EXIT)
         while True:
             print(menu)
-            action = input('Valintasi -> ')
-            if action in main_menu_actions:
-                self.presenter.process_action(action)
+            selection = int(input('Valintasi -> '))
+            if selection in main_actions:
+                self.presenter.process_action(selection)
             else:
                 self.showmessage('Väärä valinta!')
             
@@ -54,15 +51,16 @@ class CUI(UI):
         2) Poista yhteystieto
         3) Palaa takaisin'''
         
-        contact_menu_actions = (UI.CONST_ACTION_MODIFY, UI.CONST_ACTION_REMOVE)
         self.showcontact(contact)
-
+        contact_actions = (UI.CONST_ACTION_MODIFY, UI.CONST_ACTION_REMOVE)
+        
         while True:
             print(contact_menu)
-            action = input('Valintasi -> ')
-            if action in contact_menu_actions:
-                self.presenter.process_contact_action(action, contact)
-            elif action == '3':
+            selection = int(input('Valintasi -> '))
+            selection += 4 #Modify selection to action id
+            if selection in contact_actions:
+                self.presenter.process_contact_action(selection, contact)
+            elif selection == 7:
                 break
             else:
                 self.showmessage('Väärä valinta!')
