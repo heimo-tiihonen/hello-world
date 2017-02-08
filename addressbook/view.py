@@ -6,27 +6,27 @@ Created on 6.2.2017
 from addressbook.model import Contact
 
 from PyQt5.QtWidgets import (QWidget, QPushButton, 
-    QHBoxLayout, QVBoxLayout)
+    QHBoxLayout, QVBoxLayout, QLineEdit, QInputDialog, QMessageBox)
 
 
 class UI():  
+        
     #actions
     CONST_ACTION_FIND = 1
     CONST_ACTION_ADD = 2
     CONST_ACTION_LIST = 3
     CONST_ACTION_EXIT = 4
     CONST_ACTION_MODIFY = 5
-    CONST_ACTION_REMOVE = 6
-
+    CONST_ACTION_REMOVE = 6    
+    
     def __init__(self, presenter):
-        self.presenter = presenter
         
+        self.presenter = presenter
+        presenter.set_ui(self)
+    
     
 class CUI(UI):
                
-    def __init__(self, presenter):
-        super().__init__(presenter)
-    
     
     def main(self):
         menu = '''Valitse toiminto:
@@ -40,18 +40,25 @@ class CUI(UI):
             print(menu)
             selection = int(input('Valintasi -> '))
             if selection in main_actions:
-                self.presenter.process_action(selection)
+                if selection == UI.CONST_ACTION_FIND:
+                    self.presenter.search_contact()
+                elif selection == UI.CONST_ACTION_ADD:
+                    self.presenter.add_contact()
+                elif selection == UI.CONST_ACTION_LIST:
+                    self.presenter.list_contacts()    
+                elif selection == UI.CONST_ACTION_EXIT:
+                    self.showmessage('Poistutaan ohjelmasta...')
+                    break
             else:
                 self.showmessage('Väärä valinta!')
             
- 
-    def contact_menu(self, contact):
+    
+    def show_contact_dialog(self, contact):
         contact_menu = '''
         1) Muokkaa yhteystietoa
         2) Poista yhteystieto
         3) Palaa takaisin'''
         
-        self.showcontact(contact)
         contact_actions = (UI.CONST_ACTION_MODIFY, UI.CONST_ACTION_REMOVE)
         
         while True:
@@ -59,8 +66,13 @@ class CUI(UI):
             selection = int(input('Valintasi -> '))
             selection += 4 #Modify selection to action id
             if selection in contact_actions:
-                self.presenter.process_contact_action(selection, contact)
-            elif selection == 7:
+                if selection == UI.CONST_ACTION_MODIFY:
+                    self.presenter.modify_contact(contact)
+                    break
+                elif selection == UI.CONST_ACTION_REMOVE:
+                    self.presenter.remove_contact(contact)
+                    break    
+            elif selection == 7: 
                 break
             else:
                 self.showmessage('Väärä valinta!')
@@ -80,7 +92,7 @@ class CUI(UI):
         return Contact(name, phone_number, email)
     
         
-    def searchcontact(self):
+    def get_search_string(self):
         return input('Hae nimellä -> ')    
         
     def showcontact(self, contact):
@@ -88,7 +100,7 @@ class CUI(UI):
         
     def showmessage(self, message):
         print(message)
-        
+    
 
 class GUI(UI, QWidget):
     
@@ -100,13 +112,13 @@ class GUI(UI, QWidget):
         
     def _initUI(self):
         
-        okButton = QPushButton("OK")
-        cancelButton = QPushButton("Cancel")
+        self.okButton = QPushButton("Search")
+        self.edit = QLineEdit('', self)
 
         hbox = QHBoxLayout()
         hbox.addStretch(1)
-        hbox.addWidget(okButton)
-        hbox.addWidget(cancelButton)
+        hbox.addWidget(self.okButton)
+        hbox.addWidget(self.edit)
 
         vbox = QVBoxLayout()
         vbox.addStretch(1)
@@ -115,12 +127,27 @@ class GUI(UI, QWidget):
         self.setLayout(vbox)    
         
         self.setGeometry(300, 300, 300, 150)
-        self.setWindowTitle('Buttons')    
+        self.setWindowTitle('Buttons')
+        self.show()
         
         #Set event handlers
-        #okButton.clicked.connect(self.showdialog)
+        #self.okButton.clicked.connect(self.presenter.search_contact())
+           
         
-        self.show()
-
+    def show_contact_dialog(self):
+        
+        text, ok = QInputDialog.getText(self, 'Input Dialog', 
+            'Enter your name:')
+        
+        if ok:
+            self.edit.text()
+                    
+                    
+    def get_search_string(self):
+        return self.edit.text()
+    
+    def showmessage(self, message):
+        # ok = QMessageBox.setText(self, message)
+        pass
         
     

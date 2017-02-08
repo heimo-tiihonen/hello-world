@@ -5,9 +5,7 @@ Created on 6.2.2017
 '''
 
 from addressbook.model import AddressBook
-from addressbook.view import UI
 import copy
-import sys
 
 
 class Presenter:
@@ -21,17 +19,23 @@ class Presenter:
     def set_ui(self, ui):
         self.ui = ui
     
-    def _searchcontact(self, searchstring):
-        contacts = self.addressbook.get_contact(searchstring)
-        return contacts
+    def search_contact(self):
+        searchstring = self.ui.get_search_string()
+        contact = self.addressbook.get_contact(searchstring)
+        if contact:
+            self.ui.showcontact(contact)
+            self.ui.show_contact_dialog(contact)
+        else:
+            self.ui.showmessage('Yhteystietoa ei löytynyt nimellä: ' + searchstring)
                 
-    def _add_contact(self):
+
+    def add_contact(self):
         contact = self.ui.add_contact()
         self.addressbook.add_contact(contact)
         self.ui.showmessage('Yhteystieto lisätty!')
     
     
-    def _listcontacts(self):
+    def list_contacts(self):
         contacts = self.addressbook.get_contacts()
         if contacts:  
             for key, contact in contacts.items():
@@ -39,8 +43,12 @@ class Presenter:
         else:
             self.ui.showmessage('Yhteystietoja ei löytynyt!')
 
-    
-    def _modifycontact(self, contact):
+    def remove_contact(self, contact):
+        self.addressbook.remove_contact(contact)
+        self.ui.showmessage('Yhteystieto poistettu!')
+        
+        
+    def modify_contact(self, contact):
         old_contact = copy.copy(contact)
         changed_contact = self.ui.modifycontact(contact)
 
@@ -49,7 +57,7 @@ class Presenter:
         if changed_contact.phone_number:
             contact.phone_number = changed_contact.phone_number
         if changed_contact.email:
-            contact.email = changed_contact.phone_number
+            contact.email = changed_contact.email
         #If contact has been modified, replace old contact with new
         if changed_contact.name or changed_contact.phone_number or changed_contact.email:
             self.addressbook.remove_contact(old_contact)
@@ -57,32 +65,4 @@ class Presenter:
             self.ui.showmessage('Muutokset tallennettu!')
         else:
             self.ui.showmessage('Ei muutoksia!')
-            
-            
-    def process_action(self, action):
-        #Process input
-        if action == UI.CONST_ACTION_FIND:
-            searchstring = self.ui.searchcontact()
-            contact = self._searchcontact(searchstring)
-            if contact:
-                self.ui.contact_menu(contact)
-            else:
-                self.ui.showmessage('Ei löytynyt yhteystietoja nimellä: ' + searchstring)
-        elif action == UI.CONST_ACTION_ADD:
-            #Add contact
-            self._add_contact()
-        elif action == UI.CONST_ACTION_LIST:
-            #List all Contacts
-            self._listcontacts()    
-        elif action == UI.CONST_ACTION_EXIT:
-            self.ui.showmessage('Poistutaan ohjelmasta...')
-            sys.exit()
-        
-        
-    def process_contact_action(self, action, contact):
-        if action == UI.CONST_ACTION_MODIFY:
-            self._modifycontact(contact)
-        elif action == UI.CONST_ACTION_REMOVE:
-            self.ui.showmessage('Poistettu yhteystieto!')
-            self.addressbook.remove_contact(contact)            
     

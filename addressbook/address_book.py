@@ -15,13 +15,12 @@ if __name__ == '__main__':
     presenter = Presenter()
     
     #Console User Interface
-    ui = CUI(presenter)
-    presenter.set_ui(ui)
-    ui.main()
+    #ui = CUI(presenter)
+    #presenter.set_ui(ui)
+    #sys.exit(ui.main())
     
     #Graphical User Interface
-    #app = QApplication(sys.argv)
-    #ui = GUI(presenter)
-    #presenter.set_ui(ui)
-    #sys.exit(app.exec_())
+    app = QApplication(sys.argv)
+    ui = GUI(presenter)
+    sys.exit(app.exec_())
     
