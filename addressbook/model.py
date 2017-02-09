@@ -58,12 +58,16 @@ class AddressBook:
                 
     
     def add_contact(self, contact):
-        self._contacts[contact.name] = contact
-        self._savecontacts()
+        if not contact.name in self._contacts:
+            self._contacts[contact.name] = contact
+            self._savecontacts()
+            return True
+        else:
+            return False
 
             
-    def remove_contact(self, contact):
-        del self._contacts[contact.name]
+    def remove_contact(self, contact_name):
+        del self._contacts[contact_name]
         self._savecontacts()
 
 
