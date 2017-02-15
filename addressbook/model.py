@@ -113,7 +113,7 @@ class ModelDB(Model):
 
     def add_contact(self, contact):
         if not contact.name in self._contacts:
-            self._contacts[contact.name] = ContactMapping(contact.name, contact.phone_number, contact.email)
+            self._contacts[contact.name] = ContactMapping(contact)
             self._savecontacts()
             return True
         else:
@@ -126,5 +126,5 @@ class ContactMapping(Contact, ModelDB.Base):
     phone_number = Column(String(20))
     email = Column(String(20))
 
-    def __init__(self, name, phone_number, email):
-        super().__init__(name, phone_number, email)
+    def __init__(self, contact):
+        super().__init__(contact.name, contact.phone_number, contact.email)

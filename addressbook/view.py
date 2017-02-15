@@ -3,7 +3,7 @@ Created on 6.2.2017
 
 @author: heimo
 '''
-from addressbook.model import Contact, ContactMapping
+from addressbook.model import Contact
 
 from PyQt5.QtWidgets import (QWidget, QPushButton, 
     QHBoxLayout, QVBoxLayout, QLineEdit, QInputDialog, QMessageBox, QListWidget, QListWidgetItem)
