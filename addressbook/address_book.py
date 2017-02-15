@@ -15,16 +15,16 @@ if __name__ == '__main__':
     #TODO: Check sys.argv for which UI to use
     
     #Console User Interface
-    #model = ModelPickle()
-    #presenter = Presenter(model)
-    #ui = CUI(presenter)
-    #presenter.set_ui(ui)
-    #sys.exit(ui.main())
+    model = ModelDB()
+    presenter = Presenter(model)
+    ui = CUI(presenter)
+    presenter.set_ui(ui)
+    sys.exit(ui.main())
     
     #Graphical User Interface
-    app = QApplication(sys.argv)
-    model = ModelDB()
-    presenter = PresenterGUI(model)
-    ui = GUI(presenter)
-    sys.exit(app.exec_())
+    #app = QApplication(sys.argv)
+    #model = ModelDB()
+    #presenter = PresenterGUI(model)
+    #ui = GUI(presenter)
+    #sys.exit(app.exec_())
     

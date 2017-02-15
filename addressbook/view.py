@@ -108,7 +108,7 @@ class CUI(UI):
         print(message)
     
     def list_contacts(self, contacts):
-        for key, contact in contacts:
+        for key, contact in contacts.items():
             self.show_contact(contact)
         
 
