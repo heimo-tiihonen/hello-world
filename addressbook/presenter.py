@@ -4,19 +4,16 @@ Created on 6.2.2017
 @author: heimo
 '''
 
-from addressbook.model import AddressBook
-import copy
-
 
 class Presenter:
     '''
     classdocs
     '''
 
-    def __init__(self):
-        self.addressbook = AddressBook()
-    
-    
+    def __init__(self, model):
+        self.addressbook = model
+        
+        
     def set_ui(self, ui):
         self.ui = ui
     
@@ -55,22 +52,12 @@ class Presenter:
         
     def modify_contact(self, contact_name):
         contact = self.addressbook.get_contact(contact_name)
-        old_contact = copy.copy(contact)
+        old_contact_name = contact.name
         changed_contact = self.ui.modify_contact(contact)
 
-        if changed_contact.name:
-            contact.name = changed_contact.name
-        if changed_contact.phone_number:
-            contact.phone_number = changed_contact.phone_number
-        if changed_contact.email:
-            contact.email = changed_contact.email
-        #If contact has been modified, replace old contact with new
-        if changed_contact.name or changed_contact.phone_number or changed_contact.email:
-            self.addressbook.remove_contact(old_contact.name)
-            self.addressbook.add_contact(contact) 
-            self.ui.showmessage('Muutokset tallennettu!')
-        else:
-            self.ui.showmessage('Ei muutoksia!')
+        self.addressbook.remove_contact(old_contact_name)
+        self.addressbook.add_contact(changed_contact) 
+        self.ui.showmessage('Muutokset tallennettu!')
    
         
 class PresenterGUI(Presenter):

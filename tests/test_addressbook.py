@@ -4,7 +4,7 @@ Created on 4.2.2017
 @author: heimo
 '''
 import unittest
-from addressbook.model import AddressBook, Contact
+from addressbook.model import Model, Contact
 
 class TestModel(unittest.TestCase):    
 
@@ -30,7 +30,7 @@ class TestModel(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         super(TestModel, cls).setUpClass()
-        cls.ab = AddressBook()
+        cls.ab = Model()
         cls.contact = Contact('Testi', '0445014190', 'testi@testi.fi')
         
 

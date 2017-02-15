@@ -3,7 +3,7 @@ Created on 6.2.2017
 
 @author: heimo
 '''
-from addressbook.model import Contact
+from addressbook.model import Contact, ContactMapping
 
 from PyQt5.QtWidgets import (QWidget, QPushButton, 
     QHBoxLayout, QVBoxLayout, QLineEdit, QInputDialog, QMessageBox, QListWidget, QListWidgetItem)
@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import (QWidget, QPushButton,
 
 class UI():  
         
-    #actions
+    #actions - TODO: These can be removed
     CONST_ACTION_FIND = 1
     CONST_ACTION_ADD = 2
     CONST_ACTION_LIST = 3
@@ -186,7 +186,7 @@ class GUI(UI, QWidget):
     
     def modify_contact(self, contact):
         #Show contact edit form
-        return contact
+        return Contact(contact.name, contact.phone_number, contact.email)
       
 
     def list_contacts(self, contacts):
